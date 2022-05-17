@@ -1,11 +1,12 @@
 import { InjectRepository } from '@nestjs/typeorm';
-import { Controller, Get, Put, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Put, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { GetUser } from '@share/decorator';
 import { JwtAuthGuard } from '@share/guards/jwt.guards';
 import { JwtUser } from 'src/app.interface';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
+import { UpdateUserDto } from './dto/update.user.dto';
 
 @ApiTags('User')
 @Controller('user')
@@ -26,8 +27,8 @@ export class UserController {
   @Put()
   async updateUser(
     @GetUser() jwtUser: JwtUser,
-    // @Body() updateData: UpdateUserDto,
+    @Body() updateData: UpdateUserDto,
   ) {
-    return this.userRepo.update({ id: jwtUser.id }, {});
+    return this.userRepo.update({ id: jwtUser.id }, updateData);
   }
 }
